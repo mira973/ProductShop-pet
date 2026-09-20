@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { CategoryChip } from '../components/CategoryChip';
+import { products } from '../data/products';
+
+
+
+
+
+
 const categories = ['Все', 'Мясо', 'Молочка', 'Овощи', 'Напитки','Выпечка']
 
 export default function HomeScreen() {
         const [activeCategory, setActiveCategory] = useState('Все')
+       
+      const filteredProducts = activeCategory === "Все"? products: products.filter((product) => product.category === activeCategory)
+      console.log(filteredProducts)
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Доставка за 15 минут</Text>
@@ -22,8 +32,11 @@ export default function HomeScreen() {
             >
 
             </CategoryChip>
+
         )}
         </ScrollView>
+
+        
 
 
       <Text style={styles.debug}>
