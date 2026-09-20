@@ -14,7 +14,8 @@ export default function HomeScreen() {
         const [activeCategory, setActiveCategory] = useState('Все')
        
       const filteredProducts = activeCategory === "Все"? products: products.filter((product) => product.category === activeCategory)
-      console.log(filteredProducts)
+
+      
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Доставка за 15 минут</Text>
@@ -36,10 +37,19 @@ export default function HomeScreen() {
         )}
         </ScrollView>
 
+        <View>
+            {filteredProducts.map(product => (
+            <View key={product.id}>
+            <Text>{product.name}</Text>
+            <Text>Цена: {product.price} р</Text>
+            </View>
+            ))}
+        </View>
+        
         
 
 
-      <Text style={styles.debug}>
+      <Text>
         Выбрано: {activeCategory}
       </Text>
 
@@ -60,12 +70,5 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '700',
     marginBottom: 20,
-  },
-
-  debug: {
-    alignItems: 'center',
-    justifyContent:'center',
-    marginTop: 610,
-    fontSize: 18,
-  },
+  }
 });
