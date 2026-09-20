@@ -17,7 +17,9 @@ export function CategoryChip({title, active, onPress}: Props){
                     active && styles.activeCategory,
                 ]}
             >
-                <Text>{title}</Text>
+                <Text style={[styles.categoryText, active && styles.activeCategoryText]}>
+                  {title}
+                </Text>
 
             </Pressable>
 
@@ -38,5 +40,15 @@ const styles = StyleSheet.create({
 
   activeCategory: {
     backgroundColor: '#d9f99d',
+  },
+
+  categoryText: {
+    color: '#3f3f46',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+
+  activeCategoryText: {
+    color: '#1a2e05',
   },
 });
