@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,Pressable} from 'react-native';
 import { Product } from '../types/product';
+
 
 type Props = {
   product: Product;
+  onPress?: () => void
 };
 
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, onPress }: Props) {
   return (
-    <View style={styles.card}>
+    <Pressable style={styles.card} onPress={onPress}>
       <View style={styles.imagePlaceholder} />
 
       <View style={styles.details}>
@@ -17,7 +19,7 @@ export function ProductCard({ product }: Props) {
         <Text style={styles.price}>{product.price} ₽</Text>
         <Text style={styles.stock}>Количество: {product.stock} шт.</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

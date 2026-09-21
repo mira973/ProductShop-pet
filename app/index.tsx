@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
 import { CategoryChip } from '../components/CategoryChip';
 import { products } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
+import {useRouter } from 'expo-router';
 
 
 
@@ -15,6 +16,8 @@ const categories = ['Все', 'Мясо', 'Молочка', 'Овощи', 'На�
 export default function HomeScreen() {
         const [activeCategory, setActiveCategory] = useState('Все')
         const [searchQuery, setSearchQuery] = useState('')
+        const router = useRouter()
+
 
         const filteredProducts =
         activeCategory === 'Все'
@@ -68,6 +71,7 @@ const displayedProducts =
           <ProductCard
         key={product.id}
           product={product}
+          onPress={() => router.push(`/Product/${product.id}`)}
          />
         ))}
     </View>
