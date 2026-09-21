@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
 import { CategoryChip } from '../components/CategoryChip';
 import { products } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
+
 
 
 
@@ -13,13 +14,34 @@ const categories = ['Все', 'Мясо', 'Молочка', 'Овощи', 'На�
 
 export default function HomeScreen() {
         const [activeCategory, setActiveCategory] = useState('Все')
-       
-      const filteredProducts = activeCategory === "Все"? products: products.filter((product) => product.category === activeCategory)
+        const [searchQuery, setSearchQuery] = useState('')
 
+        const filteredProducts =
+        activeCategory === 'Все'
+        ? products
+        : products.filter(
+        (product) => product.category === activeCategory
+      )
+
+        const searchFilteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+const displayedProducts =
+  searchQuery !== ''
+    ? searchFilteredProducts
+    : filteredProducts
       
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>Доставка за 15 минут</Text>
+      <View>
+        <TextInput
+        style={styles.searchInput}
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder="Найти товар"
+      />
+      </View>
 
         <ScrollView
           horizontal
@@ -42,10 +64,13 @@ export default function HomeScreen() {
         </ScrollView>
 
         <View style={styles.productGrid}>
-            {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product}/>
-            ))}
-        </View>
+        {displayedProducts.map((product) => (
+          <ProductCard
+        key={product.id}
+          product={product}
+         />
+        ))}
+    </View>
 
     </View>
   );
@@ -76,4 +101,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+
+  searchInput: {
+  height: 44,
+  borderWidth: 1,
+  borderRadius: 12,
+  paddingHorizontal: 12,
+  marginBottom: 16,
+}
 });
