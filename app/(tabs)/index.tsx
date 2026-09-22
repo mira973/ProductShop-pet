@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TextInput, FlatList } from 'react-native';
-import { CategoryChip } from '../components/CategoryChip';
-import { products } from '../data/products';
-import { ProductCard } from '../components/ProductCard';
+import { CategoryChip } from '../../components/CategoryChip';
+import { products } from '../../data/products';
+import { ProductCard } from '../../components/ProductCard';
 import {useRouter } from 'expo-router';
 
 
