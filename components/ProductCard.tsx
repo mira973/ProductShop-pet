@@ -24,21 +24,26 @@ export function ProductCard({ product, onPress }: Props) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    width: '31.5%',
-    minHeight: 190,
-    marginBottom: 12,
-    overflow: 'hidden',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e7e7e7',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+card: {
+  width: '48%',
+  borderRadius: 16,
+  backgroundColor: '#fff',
+
+  borderWidth: 1,
+  borderColor: '#ececec',
+
+  overflow: 'hidden',
+
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 3,
   },
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+
+  elevation: 3,
+},
   imagePlaceholder: {
     width: '100%',
     height: 88,

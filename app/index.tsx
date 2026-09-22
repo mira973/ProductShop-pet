@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TextInput, FlatList } from 'react-native';
 import { CategoryChip } from '../components/CategoryChip';
 import { products } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
@@ -47,7 +47,7 @@ const displayedProducts =
       </View>
 
         <ScrollView
-          horizontal
+        horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categories}
         >
@@ -58,7 +58,6 @@ const displayedProducts =
             title={category}
             active={activeCategory === category}
             onPress={() => setActiveCategory(category)}
-            
             >
 
             </CategoryChip>
@@ -66,22 +65,40 @@ const displayedProducts =
         )}
         </ScrollView>
 
-        <View style={styles.productGrid}>
-        {displayedProducts.map((product) => (
-          <ProductCard
-        key={product.id}
-          product={product}
-          onPress={() => router.push(`/Product/${product.id}`)}
-         />
-        ))}
-    </View>
+        
+      <FlatList
+  data={displayedProducts}
+  renderItem={({ item }) => (
+    <ProductCard
+      product={item}
+      onPress={() => router.push(`/Product/${item.id}`)}
+    />
+  )}
+  keyExtractor={(item) => item.id.toString()}
+  numColumns={2}
+  contentContainerStyle={styles.listContainer}
+  columnWrapperStyle={styles.row}
+  showsVerticalScrollIndicator={false}
+/>
 
     </View>
   );
 }
 
 
+
 const styles = StyleSheet.create({
+
+  listContainer: {
+    paddingTop: 16,
+    paddingBottom: 32,
+  },
+
+  row:{
+  justifyContent: 'space-between',
+  marginBottom: 14,
+  },
+
   container: {
     flex: 1,
     paddingTop: 60,
@@ -102,7 +119,7 @@ const styles = StyleSheet.create({
 
   productGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     justifyContent: 'space-between',
   },
 
