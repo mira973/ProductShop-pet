@@ -11,7 +11,7 @@ import {useRouter } from 'expo-router';
 
 
 
-const categories = ['Все', 'Мясо', 'Молочка', 'Овощи', 'Напитки','Выпечка']
+const categories = ['Все', 'Мясо', 'Молочка', 'Овощи', 'Напитки','Выпечка','Фрукты','Бакалея','Соусы']
 
 export default function HomeScreen() {
         const [activeCategory, setActiveCategory] = useState('Все')
