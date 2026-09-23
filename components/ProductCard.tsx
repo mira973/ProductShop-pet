@@ -6,8 +6,9 @@ type Props = {
   product: Product;
   onPress?: () => void
 };
-
 export function ProductCard({ product, onPress }: Props) {
+
+
   return (
     <Pressable style={styles.card} onPress={onPress}>
       <View style={styles.imagePlaceholder} />
@@ -17,8 +18,11 @@ export function ProductCard({ product, onPress }: Props) {
           {product.name}
         </Text>
         <Text style={styles.price}>{product.price} ₽</Text>
+        <Text style={styles.unit}>{`${product.value} ${product.unit}`}</Text>
         <Text style={styles.stock}>Количество: {product.stock} шт.</Text>
       </View>
+
+      
     </Pressable>
   );
 }
@@ -70,4 +74,10 @@ card: {
     color: '#737373',
     fontSize: 11,
   },
+
+  unit:{
+    fontSize: 10,
+    color: "#733414"
+  },
+
 });
