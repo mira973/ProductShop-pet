@@ -5,4 +5,6 @@
     category: string,
     image: string,
     stock: number,
+    unit: "г"|"мл"|"шт",
+    value: number
 }

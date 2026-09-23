@@ -8,7 +8,9 @@ export const products: Product[] = [
         price: 349,
         category: "Мясо",
         image: "",
-        stock: 8
+        stock: 8,
+        value: 500,
+        unit: "г"
     },
 
     {
@@ -17,7 +19,9 @@ export const products: Product[] = [
         price: 150,
         category: 'Молочка',
         image: "",
-        stock: 10
+        stock: 10,
+        value: 500,
+        unit: 'мл'
     },
 
     {
@@ -26,7 +30,9 @@ export const products: Product[] = [
         price: 70,
         category: 'Овощи',
         image: "",
-        stock: 20
+        stock: 20,
+        value: 10,
+        unit: "шт"
     },
 
     {
@@ -35,7 +41,9 @@ export const products: Product[] = [
         price: 160,
         category: 'Напитки',
         image: "",
-        stock: 5
+        stock: 5,
+        unit: 'мл',
+        value: 250
     },
     {
         id: 5,
@@ -43,6 +51,8 @@ export const products: Product[] = [
         price: 87,
         category: 'Выпечка',
         image: "",
-        stock: 30
+        stock: 30,
+        unit: "шт",
+        value: 1
     }
 ]
