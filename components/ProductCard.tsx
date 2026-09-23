@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View,Pressable} from 'react-native';
+import { Image, StyleSheet, Text, View,Pressable} from 'react-native';
+import { productImages } from '../data/productImages';
 import { Product } from '../types/product';
 
 
@@ -8,10 +9,21 @@ type Props = {
 };
 export function ProductCard({ product, onPress }: Props) {
 
+  const image = productImages[product.image];
 
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <View style={styles.imagePlaceholder} />
+      <View style={styles.imageArea}>
+        {image ? (
+          <Image
+            source={image}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        ) : (
+          <View style={styles.imagePlaceholder} />
+        )}
+      </View>
 
       <View style={styles.details}>
         <Text style={styles.name} numberOfLines={2}>
@@ -20,8 +32,8 @@ export function ProductCard({ product, onPress }: Props) {
         <Text style={styles.price}>{product.price} ₽</Text>
         <Text style={styles.unit}>{`${product.value} ${product.unit}`}</Text>
         <Text style={styles.stock}>Количество: {product.stock} шт.</Text>
-      </View>
 
+      </View>
       
     </Pressable>
   );
@@ -48,10 +60,23 @@ card: {
 
   elevation: 3,
 },
-  imagePlaceholder: {
+  imageArea: {
     width: '100%',
-    height: 88,
+    aspectRatio: 1,
+    padding: 10,
     backgroundColor: '#f1f3f5',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  imagePlaceholder: {
+    flex: 1,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e2e5e9',
+    borderStyle: 'dashed',
+    backgroundColor: '#f7f8fa',
   },
   details: {
     padding: 9,

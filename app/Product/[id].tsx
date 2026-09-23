@@ -1,8 +1,10 @@
 import {
+  Image,
   View,
   Text,
   Pressable,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 
 import {
@@ -13,6 +15,8 @@ import {
 import { useState } from 'react';
 
 import { products } from '../../data/products';
+import { productImages } from '../../data/productImages';
+import { ProductInfo } from '../../components/ProductInfo';
 
 
 export default function ProductScreen() {
@@ -36,6 +40,7 @@ export default function ProductScreen() {
     );
   }
 
+  const image = productImages[product.image];
 
   const changeButton =
     product.stock === 0 ? (
@@ -98,37 +103,39 @@ export default function ProductScreen() {
   return (
     <View style={styles.container}>
 
-      <View style={styles.imageContainer}>
-        <Pressable
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <Text style={styles.backButtonText}>
-            ‹
-          </Text>
-        </Pressable>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
 
-        <View style={styles.imagePlaceholder}>
-          <Text style={styles.imageText}>
-            PRODUCT IMAGE
-          </Text>
+        <View style={styles.imageContainer}>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <Text style={styles.backButtonText}>
+              ‹
+            </Text>
+          </Pressable>
+
+          <View style={styles.imageArea}>
+            {image ? (
+              <Image
+                source={image}
+                style={styles.image}
+                resizeMode="contain"
+              />
+            ) : (
+              <View style={styles.imagePlaceholder} />
+            )}
+          </View>
         </View>
-      </View>
 
 
-      <View style={styles.productInfo}>
-        <Text style={styles.title}>
-          {product.name}
-        </Text>
+        <ProductInfo product={product} />
 
-        <Text style={styles.unit}>
-          {product.value} {product.unit}
-        </Text>
-
-        <Text style={styles.stock}>
-          В наличии: {product.stock} шт.
-        </Text>
-      </View>
+      </ScrollView>
 
 
       <View style={styles.bottomCard}>
@@ -169,10 +176,11 @@ const styles = StyleSheet.create({
   },
 
 
-  imagePlaceholder: {
+  imageArea: {
     width: '100%',
     height: 380,
     borderRadius: 28,
+    padding: 16,
 
     backgroundColor: '#f2f2f2',
 
@@ -181,10 +189,23 @@ const styles = StyleSheet.create({
   },
 
 
-  imageText: {
-    color: '#aaa',
-    fontSize: 14,
-    fontWeight: '600',
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+
+
+  imagePlaceholder: {
+    width: '100%',
+    height: '100%',
+
+    borderRadius: 20,
+
+    borderWidth: 1,
+    borderColor: '#e2e5e9',
+    borderStyle: 'dashed',
+
+    backgroundColor: '#f7f8fa',
   },
 
 
@@ -215,35 +236,13 @@ const styles = StyleSheet.create({
   },
 
 
-  productInfo: {
-    marginTop: 22,
+  scroll: {
+    flex: 1,
   },
 
 
-  title: {
-    fontSize: 27,
-    lineHeight: 32,
-    fontWeight: '800',
-    color: '#171717',
-  },
-
-
-  unit: {
-    marginTop: 8,
-
-    fontSize: 16,
-    fontWeight: '500',
-
-    color: '#737373',
-  },
-
-
-  stock: {
-    marginTop: 8,
-
-    fontSize: 14,
-
-    color: '#8a8a8a',
+  scrollContent: {
+    paddingBottom: 16,
   },
 
 

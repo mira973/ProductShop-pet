@@ -32,17 +32,16 @@ export default function TabsLayout() {
         ? 2
         : 0;
 
-  // Реальная ширина области, в которой находятся три таба.
+
   const availableWidth =
     tabBarWidth - TAB_PADDING * 2 - BORDER_WIDTH * 2;
 
-  // Размер одной из трёх зон.
+
   const slotWidth =
     availableWidth > 0
       ? availableWidth / 3
       : 0;
 
-  // Pill немного меньше своей зоны.
   const pillWidth =
     slotWidth > 0
       ? slotWidth - PILL_GAP * 2
@@ -56,8 +55,6 @@ export default function TabsLayout() {
     Animated.spring(translateX, {
       toValue: activeIndex * slotWidth,
 
-      // На телефоне используем native driver.
-      // На web он иногда работает нестабильно.
       useNativeDriver: Platform.OS !== 'web',
 
       friction: 8,

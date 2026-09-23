@@ -1,0 +1,70 @@
+import type { ImageSourcePropType } from "react-native";
+
+/**
+ * Статический реестр локальных изображений товаров.
+ *
+ * Metro не поддерживает динамический require, поэтому каждый файл
+ * подключён явным статическим require(). Ключ — значение product.image.
+ *
+ * Значение может быть undefined, если для product.image нет файла:
+ * в этом случае UI показывает нейтральный placeholder.
+ */
+export const productImages: Record<string, ImageSourcePropType | undefined> = {
+  "chicken-fillet.webp": require("../assets/products/chicken-fillet.webp"),
+  "chicken-thighs.webp": require("../assets/products/chicken-thighs.webp"),
+  "chicken-wings.webp": require("../assets/products/chicken-wings.webp"),
+  "turkey-fillet.webp": require("../assets/products/turkey-fillet.webp"),
+  "ground-beef.webp": require("../assets/products/ground-beef.webp"),
+  "pork-shoulder.webp": require("../assets/products/pork-shoulder.webp"),
+
+  "milk-3-2.webp": require("../assets/products/milk-3-2.webp"),
+  "cream-20.webp": require("../assets/products/cream-20.webp"),
+  "butter-82-5.webp": require("../assets/products/butter-82-5.webp"),
+  "sour-cream-20.webp": require("../assets/products/sour-cream-20.webp"),
+  "cottage-cheese-5.webp": require("../assets/products/cottage-cheese-5.webp"),
+  "natural-yogurt.webp": require("../assets/products/natural-yogurt.webp"),
+  "mozzarella-cheese.webp": require("../assets/products/mozzarella-cheese.webp"),
+  "chicken-eggs.webp": require("../assets/products/chicken-eggs.webp"),
+
+  "potatoes.webp": require("../assets/products/potatoes.webp"),
+  "tomatoes.webp": require("../assets/products/tomatoes.webp"),
+  "cucumbers.webp": require("../assets/products/cucumbers.webp"),
+  "carrots.webp": require("../assets/products/carrots.webp"),
+  "yellow-onions.webp": require("../assets/products/yellow-onions.webp"),
+  "button-mushrooms.webp": require("../assets/products/button-mushrooms.webp"),
+  "red-bell-peppers.webp": require("../assets/products/red-bell-peppers.webp"),
+  "zucchini.webp": require("../assets/products/zucchini.webp"),
+
+  "red-apples.webp": require("../assets/products/red-apples.webp"),
+  "pears.webp": require("../assets/products/pears.webp"),
+  "bananas.webp": require("../assets/products/bananas.webp"),
+  "oranges.webp": require("../assets/products/oranges.webp"),
+  "lemons.webp": require("../assets/products/lemons.webp"),
+  "green-grapes.webp": require("../assets/products/green-grapes.webp"),
+
+  "long-grain-rice.webp": require("../assets/products/long-grain-rice.webp"),
+  "buckwheat.webp": require("../assets/products/buckwheat.webp"),
+  "spaghetti.webp": require("../assets/products/spaghetti.webp"),
+  "wheat-flour.webp": require("../assets/products/wheat-flour.webp"),
+  "sunflower-oil.webp": require("../assets/products/sunflower-oil.webp"),
+  "rolled-oats.webp": require("../assets/products/rolled-oats.webp"),
+  "white-sugar.webp": require("../assets/products/white-sugar.webp"),
+
+  "still-water.webp": require("../assets/products/still-water.webp"),
+  "apple-juice.webp": require("../assets/products/apple-juice.webp"),
+  "orange-juice.webp": require("../assets/products/orange-juice.webp"),
+  "tarragon-lemonade.webp": require("../assets/products/tarragon-lemonade.webp"),
+  "cranberry-fruit-drink.webp": require("../assets/products/cranberry-fruit-drink.webp"),
+
+  "rye-bread.webp": require("../assets/products/rye-bread.webp"),
+  "wheat-baguette.webp": require("../assets/products/wheat-baguette.webp"),
+  "thin-lavash.webp": require("../assets/products/thin-lavash.webp"),
+  "butter-croissant.webp": require("../assets/products/butter-croissant.webp"),
+  "cinnamon-roll.webp": require("../assets/products/cinnamon-roll.webp"),
+
+  "tomato-sauce.webp": require("../assets/products/tomato-sauce.webp"),
+  "basil-pesto.webp": require("../assets/products/basil-pesto.webp"),
+  "table-mustard.webp": require("../assets/products/table-mustard.webp"),
+  "soy-sauce.webp": require("../assets/products/soy-sauce.webp"),
+  "mayonnaise-67.webp": require("../assets/products/mayonnaise-67.webp"),
+};
