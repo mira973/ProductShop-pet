@@ -1,14 +1,5 @@
 import type { ImageSourcePropType } from "react-native";
 
-/**
- * Статический реестр локальных изображений товаров.
- *
- * Metro не поддерживает динамический require, поэтому каждый файл
- * подключён явным статическим require(). Ключ — значение product.image.
- *
- * Значение может быть undefined, если для product.image нет файла:
- * в этом случае UI показывает нейтральный placeholder.
- */
 export const productImages: Record<string, ImageSourcePropType | undefined> = {
   "chicken-fillet.webp": require("../assets/products/chicken-fillet.webp"),
   "chicken-thighs.webp": require("../assets/products/chicken-thighs.webp"),

@@ -17,28 +17,32 @@ import { useState } from 'react';
 import { products } from '../../data/products';
 import { productImages } from '../../data/productImages';
 import { ProductInfo } from '../../components/ProductInfo';
+import { useCart } from '../../context/CartContext';
 
 
 export default function ProductScreen() {
-  const [quantity, setQuantity] = useState(0);
+ const { cart, increase, decrease } = useCart();
 
-  const params = useLocalSearchParams();
-  const router = useRouter();
+const params = useLocalSearchParams();
+const router = useRouter();
 
-  const productId = Number(params.id);
+const productId = Number(params.id);
 
-  const product = products.find(
-    (item) => item.id === productId
+const product = products.find(
+  (item) => item.id === productId
+);
+
+if (!product) {
+  return (
+    <View style={styles.container}>
+      <Text>Товар не найден</Text>
+    </View>
   );
+}
 
+const quantity = cart[product.id] ?? 0;
 
-  if (!product) {
-    return (
-      <View style={styles.container}>
-        <Text>Товар не найден</Text>
-      </View>
-    );
-  }
+  
 
   const image = productImages[product.image];
 
@@ -52,7 +56,7 @@ export default function ProductScreen() {
     ) : quantity === 0 ? (
       <Pressable
         style={styles.addButton}
-        onPress={() => setQuantity(1)}
+        onPress={() => increase(product.id)}
       >
         <Text style={styles.addButtonText}>
           Добавить в корзину
@@ -63,9 +67,8 @@ export default function ProductScreen() {
         <Pressable
           style={styles.counterButton}
           onPress={() =>
-            setQuantity((prev) =>
-              prev > 0 ? prev - 1 : 0
-            )
+            decrease(product.id)
+            
           }
         >
           <Text style={styles.counterButtonText}>
@@ -85,11 +88,7 @@ export default function ProductScreen() {
               styles.disabledButton,
           ]}
           onPress={() =>
-            setQuantity((prev) =>
-              prev < product.stock
-                ? prev + 1
-                : prev
-            )
+            increase(product.id)
           }
         >
           <Text style={styles.counterButtonText}>
