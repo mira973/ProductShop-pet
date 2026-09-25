@@ -1,27 +1,61 @@
-import { Image, StyleSheet, Text, View,Pressable} from 'react-native';
-import { productImages } from '../data/productImages';
-import { Product } from '../types/product';
+import { useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { productImages } from '../data/productImages';
+import { color, radius, space, tabularNums, text } from '../theme/tokens';
+import type { Product } from '../types/product';
+import { discountPercent, stockNote, unitPriceLabel } from '../utils/productFormat';
 
 type Props = {
   product: Product;
-  onPress?: () => void
+  onPress?: () => void;
 };
+
 export function ProductCard({ product, onPress }: Props) {
+  const [focused, setFocused] = useState(false);
 
   const image = productImages[product.image];
+  const discount = discountPercent(product.price, product.oldPrice);
+  const unitPrice = unitPriceLabel(product);
+  const stock = stockNote(product);
+  const unavailable = stock?.tone === 'danger';
+
+  const meta = [`${product.value} ${product.unit}`, unitPrice]
+    .filter(Boolean)
+    .join(' · ');
+
+  const availability = stock ? stock.label : 'В наличии';
 
   return (
-    <Pressable style={styles.card} onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      accessibilityRole="button"
+      accessibilityLabel={`${product.name}, ${product.price} рублей за ${product.value} ${product.unit}. ${availability}`}
+      accessibilityHint="Открыть карточку товара"
+      style={({ pressed }) => [
+        styles.card,
+        focused && styles.cardFocused,
+        pressed && styles.cardPressed,
+      ]}
+    >
       <View style={styles.imageArea}>
         {image ? (
           <Image
             source={image}
-            style={styles.image}
+            style={[styles.image, unavailable && styles.imageUnavailable]}
             resizeMode="contain"
+            accessibilityIgnoresInvertColors
           />
         ) : (
           <View style={styles.imagePlaceholder} />
+        )}
+
+        {discount !== null && !unavailable && (
+          <View style={styles.discountBadge}>
+            <Text style={styles.discountText}>−{discount}%</Text>
+          </View>
         )}
       </View>
 
@@ -29,80 +63,141 @@ export function ProductCard({ product, onPress }: Props) {
         <Text style={styles.name} numberOfLines={2}>
           {product.name}
         </Text>
-        <Text style={styles.price}>{product.price} ₽</Text>
-        <Text style={styles.unit}>{`${product.value} ${product.unit}`}</Text>
-        <Text style={styles.stock}>Количество: {product.stock} шт.</Text>
 
+        {/*
+          Price and old price are one inline run, so they always share a
+          baseline instead of drifting apart inside a flex row.
+        */}
+        <Text style={styles.price} numberOfLines={1}>
+          {product.price} ₽
+          {product.oldPrice !== undefined && (
+            <Text style={styles.oldPrice}>  {product.oldPrice} ₽</Text>
+          )}
+        </Text>
+
+        <Text style={styles.meta} numberOfLines={1}>
+          {meta}
+        </Text>
+
+        {stock !== null && (
+          <Text
+            style={[
+              styles.stock,
+              unavailable ? styles.stockUnavailable : styles.stockLow,
+            ]}
+            numberOfLines={1}
+          >
+            {stock.label}
+          </Text>
+        )}
       </View>
-      
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-card: {
-  width: '48%',
-  borderRadius: 16,
-  backgroundColor: '#fff',
-
-  borderWidth: 1,
-  borderColor: '#ececec',
-
-  overflow: 'hidden',
-
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 0,
-    height: 3,
+  card: {
+    flex: 1,
+    overflow: 'hidden',
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: color.border,
+    backgroundColor: color.surface,
   },
-  shadowOpacity: 0.08,
-  shadowRadius: 8,
 
-  elevation: 3,
-},
+  cardFocused: {
+    borderColor: color.accent,
+    outlineStyle: 'solid',
+    outlineWidth: 2,
+    outlineColor: color.accent,
+    outlineOffset: 1,
+  },
+
+  cardPressed: {
+    opacity: 0.9,
+  },
+
+  /**
+   * The product photos already sit on a neutral white background, so the image
+   * slot stays white and the picture blends in instead of floating in a grey box.
+   */
   imageArea: {
-    width: '100%',
     aspectRatio: 1,
-    padding: 10,
-    backgroundColor: '#f1f3f5',
+    padding: space.md,
+    backgroundColor: color.surface,
   },
+
   image: {
     width: '100%',
     height: '100%',
   },
+
+  imageUnavailable: {
+    opacity: 0.45,
+  },
+
   imagePlaceholder: {
     flex: 1,
-    borderRadius: 12,
+    borderRadius: radius.sm,
     borderWidth: 1,
-    borderColor: '#e2e5e9',
+    borderColor: color.border,
     borderStyle: 'dashed',
-    backgroundColor: '#f7f8fa',
   },
-  details: {
-    padding: 9,
+
+  discountBadge: {
+    position: 'absolute',
+    top: space.md,
+    left: space.md,
+    paddingHorizontal: space.sm,
+    borderRadius: radius.sm,
+    backgroundColor: color.accentTint,
   },
-  name: {
-    minHeight: 38,
-    color: '#171717',
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 18,
-  },
-  price: {
-    marginTop: 6,
-    color: '#171717',
-    fontSize: 16,
+
+  discountText: {
+    ...text.micro,
     fontWeight: '700',
+    color: color.accent,
+    ...tabularNums,
   },
+
+  details: {
+    flex: 1,
+    paddingHorizontal: space.md,
+    paddingTop: space.xs,
+    paddingBottom: space.md,
+  },
+
+  name: {
+    ...text.productName,
+    minHeight: text.productName.lineHeight * 2,
+  },
+
+  price: {
+    ...text.productPrice,
+    ...tabularNums,
+    marginTop: space.sm,
+  },
+
+  oldPrice: {
+    ...text.productOldPrice,
+    ...tabularNums,
+  },
+
+  meta: {
+    ...text.micro,
+    marginTop: space.xs,
+  },
+
   stock: {
-    marginTop: 4,
-    color: '#737373',
-    fontSize: 11,
+    ...text.micro,
+    marginTop: space.xs,
   },
 
-  unit:{
-    fontSize: 10,
-    color: "#733414"
+  stockLow: {
+    color: color.warning,
   },
 
+  stockUnavailable: {
+    color: color.danger,
+  },
 });

@@ -1,102 +1,79 @@
 import { type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Product } from '../types/product';
 
+import { color, radius, space, tabularNums, text } from '../theme/tokens';
+import type { Product } from '../types/product';
 
 type Props = {
   product: Product;
 };
 
-
+/**
+ * Order follows how a shopper reads a product: what it is, what it costs, how
+ * much of it, whether it is available, and only then the reference detail.
+ */
 export function ProductInfo({ product }: Props) {
   const inStock = product.isAvailable && product.stock > 0;
 
   return (
     <View style={styles.container}>
-
-      <Text style={styles.name}>
-        {product.name}
-      </Text>
-
-      {product.tags.length > 0 && (
-        <View style={styles.tagsRow}>
-          {product.tags.map((tag) => (
-            <View key={tag} style={styles.tag}>
-              <Text style={styles.tagText}>
-                {tag}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
+      <Text style={styles.name}>{product.name}</Text>
 
       <View style={styles.priceRow}>
-        <Text style={styles.price}>
-          {product.price} ₽
-        </Text>
+        <Text style={styles.price}>{product.price} ₽</Text>
 
         {product.oldPrice !== undefined && (
-          <Text style={styles.oldPrice}>
-            {product.oldPrice} ₽
-          </Text>
+          <Text style={styles.oldPrice}>{product.oldPrice} ₽</Text>
         )}
       </View>
 
       <View style={styles.factsRow}>
-        <View style={styles.weightChip}>
-          <Text style={styles.weightText}>
+        <View style={styles.factChip}>
+          <Text style={styles.factText}>
             {product.value} {product.unit}
           </Text>
         </View>
 
         <View
           style={[
-            styles.stockChip,
+            styles.factChip,
             inStock ? styles.inStockChip : styles.outOfStockChip,
           ]}
         >
           <Text
             style={[
-              styles.stockText,
+              styles.factText,
               inStock ? styles.inStockText : styles.outOfStockText,
             ]}
           >
-            {inStock
-              ? `В наличии: ${product.stock} шт.`
-              : 'Нет в наличии'}
+            {inStock ? `В наличии: ${product.stock} шт.` : 'Нет в наличии'}
           </Text>
         </View>
       </View>
 
-      <Text style={styles.description}>
-        {product.description}
-      </Text>
+      <Text style={styles.description}>{product.description}</Text>
+
+      {product.tags.length > 0 && (
+        <View style={styles.tagsRow}>
+          {product.tags.map((tag) => (
+            <View key={tag} style={styles.tag}>
+              <Text style={styles.tagText}>{tag}</Text>
+            </View>
+          ))}
+        </View>
+      )}
 
       <Section title="КБЖУ (на 100 г)">
         <View style={styles.nutritionRow}>
-          <NutritionCell
-            label="Ккал"
-            value={product.nutrition.calories}
-          />
-          <NutritionCell
-            label="Белки"
-            value={product.nutrition.protein}
-          />
-          <NutritionCell
-            label="Жиры"
-            value={product.nutrition.fat}
-          />
-          <NutritionCell
-            label="Углеводы"
-            value={product.nutrition.carbs}
-          />
+          <NutritionCell label="Ккал" value={product.nutrition.calories} />
+          <NutritionCell label="Белки" value={product.nutrition.protein} />
+          <NutritionCell label="Жиры" value={product.nutrition.fat} />
+          <NutritionCell label="Углеводы" value={product.nutrition.carbs} />
         </View>
       </Section>
 
       <Section title="Состав">
-        <Text style={styles.sectionText}>
-          {product.ingredients}
-        </Text>
+        <Text style={styles.sectionText}>{product.ingredients}</Text>
       </Section>
 
       <Section title="Аллергены">
@@ -108,239 +85,197 @@ export function ProductInfo({ product }: Props) {
       </Section>
 
       <Section title="Хранение и срок годности">
-        <InfoRow
-          label="Условия хранения"
-          value={product.storageConditions}
-        />
-        <InfoRow
-          label="Срок годности"
-          value={product.shelfLife}
-        />
-        <InfoRow
-          label="Страна происхождения"
-          value={product.countryOfOrigin}
-        />
+        <InfoRow label="Условия хранения" value={product.storageConditions} />
+        <InfoRow label="Срок годности" value={product.shelfLife} />
+        <InfoRow label="Страна происхождения" value={product.countryOfOrigin} />
       </Section>
-
     </View>
   );
 }
 
-
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>
-        {title}
-      </Text>
+      <Text style={styles.sectionTitle}>{title}</Text>
 
       {children}
     </View>
   );
 }
 
-
 function NutritionCell({ label, value }: { label: string; value: number }) {
   return (
     <View style={styles.nutritionCell}>
-      <Text style={styles.nutritionValue}>
-        {value}
-      </Text>
+      <Text style={styles.nutritionValue}>{value}</Text>
 
-      <Text style={styles.nutritionLabel}>
-        {label}
-      </Text>
+      <Text style={styles.nutritionLabel}>{label}</Text>
     </View>
   );
 }
-
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <View style={styles.infoRow}>
-      <Text style={styles.infoLabel}>
-        {label}
-      </Text>
+      <Text style={styles.infoLabel}>{label}</Text>
 
-      <Text style={styles.infoValue}>
-        {value}
-      </Text>
+      <Text style={styles.infoValue}>{value}</Text>
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
-    marginTop: 22,
+    marginTop: space.xl,
   },
 
   name: {
-    fontSize: 27,
-    lineHeight: 32,
-    fontWeight: '800',
-    color: '#171717',
-  },
-
-  tagsRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 12,
-  },
-
-  tag: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
-    backgroundColor: '#f1f3f5',
-  },
-
-  tagText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#4b5563',
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: '700',
+    color: color.textPrimary,
   },
 
   priceRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    gap: 10,
-    marginTop: 16,
+    gap: space.md,
+    marginTop: space.sm,
   },
 
   price: {
     fontSize: 26,
+    lineHeight: 30,
     fontWeight: '800',
-    color: '#171717',
+    color: color.textPrimary,
+    ...tabularNums,
   },
 
   oldPrice: {
-    fontSize: 16,
-    color: '#9ca3af',
-    textDecorationLine: 'line-through',
+    ...text.productOldPrice,
+    ...tabularNums,
   },
 
   factsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 12,
+    gap: space.sm,
+    marginTop: space.md,
   },
 
-  weightChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 10,
-    backgroundColor: '#f3f4f6',
-  },
-
-  weightText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#374151',
-  },
-
-  stockChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 10,
+  factChip: {
+    paddingHorizontal: space.md,
+    paddingVertical: space.sm,
+    borderRadius: radius.sm,
+    backgroundColor: color.surfaceSunken,
   },
 
   inStockChip: {
-    backgroundColor: '#e8f8ee',
+    backgroundColor: color.accentTint,
   },
 
   outOfStockChip: {
-    backgroundColor: '#fdecec',
+    backgroundColor: color.dangerTint,
   },
 
-  stockText: {
-    fontSize: 13,
+  factText: {
+    ...text.meta,
     fontWeight: '600',
+    color: color.textPrimary,
   },
 
   inStockText: {
-    color: '#15803d',
+    color: color.accent,
   },
 
   outOfStockText: {
-    color: '#b91c1c',
+    color: color.danger,
   },
 
   description: {
-    marginTop: 14,
-    fontSize: 15,
-    lineHeight: 22,
-    color: '#444444',
+    ...text.meta,
+    lineHeight: 21,
+    marginTop: space.lg,
+  },
+
+  tagsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: space.sm,
+    marginTop: space.md,
+  },
+
+  tag: {
+    paddingHorizontal: space.md,
+    paddingVertical: space.sm - 2,
+    borderRadius: radius.pill,
+    backgroundColor: color.surfaceSunken,
+  },
+
+  tagText: {
+    ...text.micro,
   },
 
   section: {
-    marginTop: 18,
-    paddingTop: 14,
+    marginTop: space.xl,
+    paddingTop: space.lg,
     borderTopWidth: 1,
-    borderTopColor: '#ececec',
+    borderTopColor: color.border,
   },
 
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: '700',
-    color: '#8a8a8a',
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
+    color: color.textPrimary,
   },
 
   sectionText: {
-    marginTop: 8,
-    fontSize: 15,
+    ...text.meta,
     lineHeight: 21,
-    color: '#333333',
+    marginTop: space.sm,
   },
 
   nutritionRow: {
     flexDirection: 'row',
-    gap: 8,
-    marginTop: 10,
+    gap: space.sm,
+    marginTop: space.md,
   },
 
   nutritionCell: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 10,
-    borderRadius: 14,
-    backgroundColor: '#f7f7f7',
+    paddingVertical: space.md,
+    borderRadius: radius.sm,
+    backgroundColor: color.surfaceSunken,
   },
 
   nutritionValue: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#171717',
+    ...text.quantity,
+    ...tabularNums,
   },
 
   nutritionLabel: {
-    marginTop: 2,
-    fontSize: 11,
-    color: '#8a8a8a',
+    ...text.micro,
+    marginTop: space.xs / 2,
   },
 
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 14,
-    marginTop: 10,
+    gap: space.lg,
+    marginTop: space.md,
   },
 
   infoLabel: {
+    ...text.meta,
     flex: 1,
-    fontSize: 14,
-    color: '#8a8a8a',
   },
 
   infoValue: {
+    ...text.meta,
     flex: 1.4,
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#171717',
+    fontWeight: '600',
+    color: color.textPrimary,
     textAlign: 'right',
   },
 });
